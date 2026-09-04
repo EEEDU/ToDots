@@ -1,9 +1,9 @@
-package com.example.todots_jetpack.model
+package com.example.todots.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import com.example.todots_jetpack.R
+import com.example.todots.R
 
 enum class EstadoTarea(val icono: Int) {
     POR_HACER(R.drawable.circulo_porhacer),

@@ -1,4 +1,4 @@
-package com.example.todots_jetpack
+package com.example.todots
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,16 +23,22 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,18 +46,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.todots_jetpack.model.EstadoTarea
-import com.example.todots_jetpack.model.Tarea
-import com.example.todots_jetpack.ui.theme.ToDots_jetpackTheme
-import com.example.todots_jetpack.viewmodel.TareaViewModel
+import com.example.todots.model.EstadoTarea
+import com.example.todots.model.Tarea
+import com.example.todots.ui.theme.ToDots_jetpackTheme
+import com.example.todots.ui.theme.black
+import com.example.todots.ui.theme.colorPrincipal
+import com.example.todots.viewmodel.TareaViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -108,7 +116,10 @@ fun Hoy(
                 },
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 90.dp)
+                    .padding(top = 90.dp),
+                onEliminarTarea = { tarea ->
+                    viewModel.eliminarTarea(tarea)
+                },
             )
 
             BotonAgregar(
@@ -168,11 +179,13 @@ fun Titulo(name: String, modifier: Modifier = Modifier) {
  * @param onEstadoCambiado Callback cuando cambia el estado de una tarea
  * @param onTextoCambiado Callback cuando se edita el texto de una tarea
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaTareas(
     tareas: List<Tarea>,
     onEstadoCambiado: (Tarea, EstadoTarea) -> Unit ,
     onTextoCambiado: (Tarea, String) -> Unit ,
+    onEliminarTarea: (Tarea) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // LazyColumn optimiza el rendimiento cuando la lista crece
@@ -184,12 +197,56 @@ fun ListaTareas(
         items(
             items = tareas,  // Define una lista de objetos que Compose debe dibujar en pantalla
             key = { it.id}
-        ) { tarea ->  // Función lambda que actua como bucle
-            TareaItem(
-                tarea = tarea,
-                onEstadoCambiado = { nuevoEstado -> onEstadoCambiado(tarea, nuevoEstado) },
-                onTextoCambiado = { nuevoTexto -> onTextoCambiado(tarea, nuevoTexto) }
+        ) { tarea ->  // Función lambda que actua como bucle {
+
+            val dismissState = rememberSwipeToDismissBoxState(
+                confirmValueChange = { dismissValue ->
+                    if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
+                        onEliminarTarea(tarea)
+                        true
+                    } else {
+                        false
+                    }
+                }
             )
+            SwipeToDismissBox(
+                state = dismissState,
+                enableDismissFromStartToEnd = false, // Esto evita que se deslice hacia la derecha
+                backgroundContent = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(black)
+                            .padding(top = 12.dp, bottom = 12.dp)
+                        ,
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Eliminar tarea",
+                            tint = Color.White
+                        )
+                    }
+
+                }
+            ) {
+
+                TareaItem(
+                    tarea = tarea,
+                    onEstadoCambiado = { nuevoEstado ->
+                        onEstadoCambiado(
+                            tarea,
+                            nuevoEstado
+                        )
+                    },
+                    onTextoCambiado = { nuevoTexto ->
+                        onTextoCambiado(
+                            tarea,
+                            nuevoTexto
+                        )
+                    }
+                )
+            }
         }
     }
 }

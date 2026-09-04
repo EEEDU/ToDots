@@ -1,4 +1,4 @@
-package com.example.todots_jetpack.ui.theme
+package com.example.todots.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

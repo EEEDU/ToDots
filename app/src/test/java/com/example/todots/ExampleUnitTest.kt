@@ -1,4 +1,4 @@
-package com.example.todots_jetpack
+package com.example.todots
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.example.todots_jetpack.data
+package com.example.todots.data
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.todots_jetpack.model.Tarea
+import com.example.todots.model.Tarea
 import kotlinx.coroutines.flow.Flow
 
 @Dao

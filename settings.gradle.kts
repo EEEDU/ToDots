@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ToDots_jetpack"
+rootProject.name = "ToDots"
 include(":app")
  

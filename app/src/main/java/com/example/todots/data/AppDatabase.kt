@@ -1,12 +1,12 @@
-package com.example.todots_jetpack.data
+package com.example.todots.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.todots_jetpack.model.Converters
-import com.example.todots_jetpack.model.Tarea
+import com.example.todots.model.Converters
+import com.example.todots.model.Tarea
 
 // Esta clase representa mi base de datos SQLite
 @Database(entities = [Tarea::class], version = 1, exportSchema = false)  // Con una sola tabla Tarea

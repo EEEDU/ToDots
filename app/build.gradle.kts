@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.todots_jetpack"
+    namespace = "com.example.todots"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.todots_jetpack"
+        applicationId = "com.example.todots"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

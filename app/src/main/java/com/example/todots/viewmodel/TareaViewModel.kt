@@ -1,11 +1,11 @@
-package com.example.todots_jetpack.viewmodel
+package com.example.todots.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todots_jetpack.data.AppDatabase
-import com.example.todots_jetpack.model.EstadoTarea
-import com.example.todots_jetpack.model.Tarea
+import com.example.todots.data.AppDatabase
+import com.example.todots.model.EstadoTarea
+import com.example.todots.model.Tarea
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
