@@ -44,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -51,14 +52,14 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todots.model.EstadoTarea
 import com.example.todots.model.Tarea
-import com.example.todots.ui.theme.ToDots_jetpackTheme
+import com.example.todots.ui.theme.ToDots_theme
 import com.example.todots.ui.theme.black
-import com.example.todots.ui.theme.colorPrincipal
 import com.example.todots.viewmodel.TareaViewModel
 
 
@@ -67,7 +68,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ToDots_jetpackTheme(dynamicColor = false) {
+            ToDots_theme(dynamicColor = false) {
                 Scaffold { innerPadding ->
                     Hoy(
                         modifier = Modifier
@@ -216,15 +217,16 @@ fun ListaTareas(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(black)
                             .padding(top = 12.dp, bottom = 12.dp)
-                        ,
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(black),
                         contentAlignment = Alignment.CenterEnd
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Eliminar tarea",
-                            tint = Color.White
+                            tint = Color.White,
+                            modifier = Modifier.padding(end = 20.dp)
                         )
                     }
 
@@ -259,7 +261,7 @@ fun TareaItem(
     modifier: Modifier = Modifier
 ) {
     var texto by remember { mutableStateOf(tarea.texto) }
-    val focusRequester = remember { FocusRequester() }  // ✅ creado una sola vez
+    val focusRequester = remember { FocusRequester() }  // creado una sola vez
 
     Surface(
         modifier = Modifier
@@ -274,8 +276,8 @@ fun TareaItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             EstadoTarea(
-                estadoActual = tarea.estado,        // ✅ estado del modelo
-                onEstadoCambiado = onEstadoCambiado // ✅ notifica arriba
+                estadoActual = tarea.estado,        // estado del modelo
+                onEstadoCambiado = onEstadoCambiado // notifica arriba
             )
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -290,7 +292,7 @@ fun TareaItem(
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
-                    onDone = { focusRequester.freeFocus() }  // ✅ cierra el teclado
+                    onDone = { focusRequester.freeFocus() }  //  cierra el teclado
                 ),
                 modifier = Modifier
                     .weight(1f)
@@ -318,14 +320,14 @@ fun BotonAgregar(modifier: Modifier = Modifier, onClick: () -> Unit) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EstadoTarea(
-    estadoActual: EstadoTarea = EstadoTarea.POR_HACER,  // ✅ recibe el estado
-    onEstadoCambiado: (EstadoTarea) -> Unit = {}         // ✅ notifica cambios
+    estadoActual: EstadoTarea = EstadoTarea.POR_HACER,  // recibe el estado
+    onEstadoCambiado: (EstadoTarea) -> Unit = {}         // notifica cambios
 ) {
     val haptic = LocalHapticFeedback.current
-    val estados = EstadoTarea.entries  // ✅ usa el enum directamente
+    val estados = EstadoTarea.entries  // usa el enum directamente
 
     Image(
-        painter = painterResource(id = estadoActual.icono),  // ✅ icono del enum
+        painter = painterResource(id = estadoActual.icono),  // icono del enum
         contentDescription = "Estado de la tarea",
         modifier = Modifier
             .size(40.dp)
@@ -343,16 +345,18 @@ fun EstadoTarea(
     )
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun HoyPreview() {
-//    ToDots_jetpackTheme(dynamicColor = false) {
-//        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//            Hoy(
-//                modifier = Modifier
-//                    .padding(innerPadding)
-//                    .background(color = MaterialTheme.colorScheme.primary)
-//            )
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun ListaTareasPreview() {
+    ToDots_theme(dynamicColor = false) {
+        ListaTareas(
+            tareas = listOf(
+                Tarea(id = 1, texto = "Comprar pan", estado = EstadoTarea.POR_HACER),
+                Tarea(id = 2, texto = "Terminar el informe", estado = EstadoTarea.EMPEZADO)
+            ),
+            onEstadoCambiado = { _, _ -> },
+            onTextoCambiado = { _, _ -> },
+            onEliminarTarea = { }
+        )
+    }
+}
