@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ToDots</string>
+
+    <!--    contentDescription-->
+    <string name="cd_eliminar_tarea">Eliminar tarea</string>
+    <string name="cd_cancelar_tarea">Cancelar tarea</string>
 </resources>
