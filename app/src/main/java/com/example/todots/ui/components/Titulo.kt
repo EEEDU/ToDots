@@ -13,8 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todots.model.EstadoTarea
+import com.example.todots.model.Tarea
 import com.example.todots.ui.theme.Dimens
+import com.example.todots.ui.theme.ToDots_theme
 
 /**
  * Cabecera de la pantalla con el titulo.
@@ -26,7 +30,7 @@ fun Titulo(name: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(bottomStart = Dimens.CornerRadius, bottomEnd = Dimens.CornerRadius),
-        shadowElevation = 8.dp,
+        shadowElevation = 12.dp,
         color = MaterialTheme.colorScheme.primary
     ) {
         Column {
@@ -42,13 +46,18 @@ fun Titulo(name: String, modifier: Modifier = Modifier) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                thickness = 3.dp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
         }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun TituloPreview() {
+    ToDots_theme(dynamicColor = false) {
+        Titulo(
+            name = "Hoy",
+//                    modifier = Modifier.padding(top = 16.dp)
+        )
     }
 }

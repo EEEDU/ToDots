@@ -65,7 +65,7 @@ fun TareaItem(
                     texto = it
                     onTextoCambiado(it)
                 },
-                textStyle = MaterialTheme.typography.titleLarge.copy(
+                textStyle = MaterialTheme.typography.headlineLarge.copy(
                     color = MaterialTheme.colorScheme.onPrimary
                 ),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
