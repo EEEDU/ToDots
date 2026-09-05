@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.todots.model.EstadoTarea
 import com.example.todots.model.Tarea
 import com.example.todots.ui.components.ListaTareas
-import com.example.todots.ui.screens.Hoy
+import com.example.todots.ui.screens.TareasScreen
 import com.example.todots.ui.theme.ToDots_theme
 
 
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToDots_theme(dynamicColor = false) {
                 Scaffold { innerPadding ->
-                    Hoy(
+                    TareasScreen(
                         modifier = Modifier
                             .padding(innerPadding)
                             .background(MaterialTheme.colorScheme.primary)

@@ -8,7 +8,8 @@ import androidx.room.TypeConverter
 data class Tarea(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val texto: String,
-    val estado: EstadoTarea = EstadoTarea.POR_HACER
+    val estado: EstadoTarea = EstadoTarea.POR_HACER,
+    val grupo: GrupoTarea = GrupoTarea.HOY
 )
 
 class Converters {
@@ -17,4 +18,10 @@ class Converters {
 
     @TypeConverter
     fun toEstado(valor: String): EstadoTarea = EstadoTarea.valueOf(valor)
+
+    @TypeConverter
+    fun fromGrupo(grupo: GrupoTarea): String = grupo.name
+
+    @TypeConverter
+    fun toGroup(valor: String): GrupoTarea = GrupoTarea.valueOf(valor)
 }

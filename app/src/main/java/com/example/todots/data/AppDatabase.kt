@@ -9,7 +9,7 @@ import com.example.todots.model.Converters
 import com.example.todots.model.Tarea
 
 // Esta clase representa mi base de datos SQLite
-@Database(entities = [Tarea::class], version = 1, exportSchema = false)  // Con una sola tabla Tarea
+@Database(entities = [Tarea::class], version = 2, exportSchema = false)  // Con una sola tabla Tarea
 @TypeConverters(Converters::class)  // Usan esta clase cuando te encuentre un tipo que no sea Tarea
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tareaDao(): TareaDao
@@ -24,7 +24,10 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "tareas_db"
-                ).build().also { INSTANCE = it }
+                )
+                .fallbackToDestructiveMigration()
+                .build()
+                .also { INSTANCE = it }
             }
         }
     }
